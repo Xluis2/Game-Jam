@@ -11,6 +11,9 @@ var cam_accel = 40
 var mouse_sense = 0.1
 var snap
 
+var able_to_move = false
+
+
 var direction = Vector3()
 var velocity = Vector3()
 var gravity_vec = Vector3()
@@ -48,7 +51,8 @@ func _physics_process(delta):
 	var h_rot = global_transform.basis.get_euler().y
 	var f_input = Input.get_action_strength("back") - Input.get_action_strength("forward")
 	var h_input = Input.get_action_strength("right") - Input.get_action_strength("left")
-	direction = Vector3(h_input, 0, f_input).rotated(Vector3.UP, h_rot).normalized()
+	if able_to_move:
+		direction = Vector3(h_input, 0, f_input).rotated(Vector3.UP, h_rot).normalized()
 	
 	#jumping and gravity
 	if is_on_floor():
@@ -63,6 +67,8 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		snap = Vector3.ZERO
 		gravity_vec = Vector3.UP * jump
+	
+	
 	
 	#make it move
 	velocity = velocity.linear_interpolate(direction * speed, accel * delta)

@@ -1,0 +1,30 @@
+[gd_resource type="SpatialMaterial" load_steps=5 format=2]
+
+[ext_resource path="res://Woodtexnormal (2).png" type="Texture" id=1]
+[ext_resource path="res://Woodtex.png" type="Texture" id=2]
+[ext_resource path="res://Woodtexnormal.png" type="Texture" id=3]
+[ext_resource path="res://Woodtexnormal (3).png" type="Texture" id=4]
+
+[resource]
+resource_name = "PolyPack_Boats"
+render_priority = -2
+flags_vertex_lighting = true
+flags_world_triplanar = true
+flags_ensure_correct_normals = true
+vertex_color_use_as_albedo = true
+albedo_color = Color( 0.878431, 0.454902, 0.12549, 1 )
+albedo_texture = ExtResource( 2 )
+metallic = 0.01
+metallic_specular = 0.02
+metallic_texture = ExtResource( 4 )
+normal_enabled = true
+normal_scale = 6.33
+normal_texture = ExtResource( 3 )
+ao_enabled = true
+ao_light_affect = 0.0
+ao_texture = ExtResource( 1 )
+ao_on_uv2 = false
+ao_texture_channel = 0
+uv1_scale = Vector3( 5, 5, 5 )
+uv1_triplanar = true
+uv1_triplanar_sharpness = 90.5096
