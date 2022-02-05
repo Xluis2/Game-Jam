@@ -29,9 +29,9 @@ func _physics_process(delta):
 		if Input.is_action_pressed("forward"):
 			add_central_force(global_transform.basis.xform(Vector3.FORWARD*speed))
 			if Input.is_action_pressed("left"):
-				add_torque(Vector3(0, 3, 0))
+				add_torque(Vector3(0, 10, 0))
 			if Input.is_action_pressed("right"):
-				add_torque(Vector3(0, -3, 0	))
+				add_torque(Vector3(0, -10, 0))
 		elif Input.is_action_pressed("back"):
 			add_central_force(global_transform.basis.xform(Vector3.BACK*5))
 			if Input.is_action_pressed("left"):
