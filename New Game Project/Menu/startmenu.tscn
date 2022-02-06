@@ -1,8 +1,8 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Menu/startmenu.gd" type="Script" id=1]
 [ext_resource path="res://Menu/Lato-Light.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://Menu/Lato-Regular.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://Menu/New Project.png" type="Texture" id=3]
 [ext_resource path="res://Menu/startmenu.theme" type="Theme" id=4]
 [ext_resource path="res://09ba63764e3e37674b8f5502b216acd4.png" type="Texture" id=5]
 [ext_resource path="res://Menu/Background.gd" type="Script" id=6]
@@ -37,13 +37,6 @@ shader_param/aspect_ratio = 0.701971
 shader_param/time_scale = Vector2( 1, 0.6 )
 shader_param/offset_scale = Vector2( 1, 0.5 )
 shader_param/amplitude = Vector2( 0.07, 0.12 )
-
-[sub_resource type="DynamicFont" id=1]
-size = 128
-outline_size = 2
-outline_color = Color( 0.105882, 0.388235, 0.682353, 1 )
-use_filter = true
-font_data = ExtResource( 3 )
 
 [sub_resource type="InputEventAction" id=2]
 action = "start"
@@ -138,20 +131,11 @@ texture = ExtResource( 7 )
 texture_scale = 1.2
 energy = 0.7
 
-[node name="Title" type="Label" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -305.0
-margin_top = 247.0
-margin_right = 778.0
-margin_bottom = 402.0
-custom_fonts/font = SubResource( 1 )
-text = "Start Menu"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="Alittlepiratetrans" type="Sprite" parent="."]
+position = Vector2( 783, 158 )
+scale = Vector2( 0.66125, 0.648 )
+texture = ExtResource( 3 )
+region_rect = Rect2( 205, 167, 411, 240 )
 
 [node name="MainMenu" type="VBoxContainer" parent="."]
 anchor_top = 0.5
@@ -457,6 +441,17 @@ autoplay = "light"
 anims/RESET = SubResource( 12 )
 anims/light = SubResource( 13 )
 anims/settings = SubResource( 9 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1050.0
+margin_top = 686.0
+margin_right = 1337.0
+margin_bottom = 735.0
+theme = ExtResource( 4 )
+text = "Version 1.0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="item_rect_changed" from="Background" to="Background" method="calculate_aspect_ratio"]
 [connection signal="pressed" from="MainMenu/StartBtn" to="." method="_on_StartBtn_pressed"]
