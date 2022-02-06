@@ -139,7 +139,6 @@ shape = SubResource( 2 )
 
 [node name="Camera" type="Camera" parent="H/V"]
 transform = Transform( 1, 0, 0, 0, 0.998582, 0.0532422, 0, -0.0532422, 0.998582, 0, 3.61168, 7.93532 )
-current = true
 fov = 90.0
 
 [node name="Floaty" type="Spatial" parent="."]

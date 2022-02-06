@@ -11,8 +11,11 @@ var cam_accel = 40
 var mouse_sense = 0.1
 var snap
 
-var able_to_move = false
+var progress = 1
 
+var able_to_move = true
+
+signal Puzzlefound
 
 var direction = Vector3()
 var velocity = Vector3()
@@ -47,6 +50,8 @@ func _process(delta):
 	pass
 	
 func _physics_process(delta):
+	
+	var position = global_transform.basis
 	#get keyboard input
 	direction = Vector3.ZERO
 	var h_rot = global_transform.basis.get_euler().y
@@ -80,3 +85,22 @@ func _physics_process(delta):
 	
 func _on_mouse_sense_updated(value):
 	mouse_sense = value
+
+func save():
+	return {
+		"progress" : progress,
+		"pos_x" : global_transform.basis.x,
+		"pos_y" : global_transform.basis.y,
+		"pos_z" : global_transform.basis.z
+	}
+
+
+func load_save(data):
+	if not data:
+		return
+		
+	
+	progress = data["progress"]
+	global_transform.basis.x = data["pos_x"]
+	global_transform.basis.y = data["pos_y"]
+	global_transform.basis.z = data["pos_z"]

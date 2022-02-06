@@ -1,5 +1,8 @@
 extends RigidBody
 
+
+var can_move = false
+
 var mouse_movement = Vector2()
 
 func _ready():
@@ -25,7 +28,7 @@ func _physics_process(delta):
 		mouse_movement = Vector2()
 
 
-	if global_transform.origin.y <= 0.1:
+	if global_transform.origin.y <= 0.1 and can_move:
 		if Input.is_action_pressed("forward"):
 			add_central_force(global_transform.basis.xform(Vector3.FORWARD*speed))
 			if Input.is_action_pressed("left"):
