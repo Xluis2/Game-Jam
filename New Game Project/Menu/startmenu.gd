@@ -9,7 +9,6 @@ onready var start_btn = $MainMenu/StartBtn
 
 func _ready():
 	start_btn.grab_focus()
-	$SettingsMenu/MainMenu2/SettingsContainer/AudioSettings/CheckButton.toggle_mode = true
 
 func _on_StartBtn_pressed():
 	get_tree().change_scene("res://screens/Level1.tscn")

@@ -25,6 +25,7 @@ onready var camera = $Head/Camera
 func _ready():
 	#hides the cursor
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	GlobalSettings.connect("mouse_sens_updated", self, "_on_mouse_sense_updated")
 
 func _input(event):
 	#get mouse input for camera rotation
@@ -77,4 +78,5 @@ func _physics_process(delta):
 	move_and_slide_with_snap(movement, snap, Vector3.UP)
 	
 	
-	
+func _on_mouse_sense_updated(value):
+	mouse_sense = value
