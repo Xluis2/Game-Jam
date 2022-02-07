@@ -14,6 +14,9 @@ func _ready():
 	load_save()
 	autosave()
 
+func _process(delta):
+	if Input.is_action_just_pressed("E"):
+		load_save()
 
 
 func load_data():	

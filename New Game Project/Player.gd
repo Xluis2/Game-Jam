@@ -50,7 +50,7 @@ func _process(delta):
 	pass
 	
 func _physics_process(delta):
-	
+	progress += 1 * delta
 	var position = global_transform.basis
 	#get keyboard input
 	direction = Vector3.ZERO
@@ -89,9 +89,9 @@ func _on_mouse_sense_updated(value):
 func save():
 	return {
 		"progress" : progress,
-		"pos_x" : global_transform.basis.x,
-		"pos_y" : global_transform.basis.y,
-		"pos_z" : global_transform.basis.z
+		"pos_x" : global_transform.origin.x,
+		"pos_y" : global_transform.origin.y,
+		"pos_z" : global_transform.origin.z,
 	}
 
 
@@ -101,6 +101,8 @@ func load_save(data):
 		
 	
 	progress = data["progress"]
-	global_transform.basis.x = data["pos_x"]
-	global_transform.basis.y = data["pos_y"]
-	global_transform.basis.z = data["pos_z"]
+	global_transform.origin.x = data["pos_x"]
+	global_transform.origin.y = data["pos_y"]
+	global_transform.origin.z = data["pos_z"]
+	
+
