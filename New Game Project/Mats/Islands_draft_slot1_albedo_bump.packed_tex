@@ -1,0 +1,8 @@
+{
+	"contains_albedo": true,
+	"resolution": 1024,
+	"src": {
+		"a": "res://Mats/Ground027_1K-PNG/Ground027_1K_Displacement.png",
+		"rgb": "res://Mats/Grass002_1K-PNG/Grass002_1K_Color.png"
+	}
+}

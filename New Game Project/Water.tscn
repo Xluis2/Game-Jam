@@ -4,7 +4,7 @@
 
 [sub_resource type="PlaneMesh" id=10]
 material = ExtResource( 1 )
-size = Vector2( 300, 300 )
+size = Vector2( 1000, 1000 )
 
 [node name="Water" type="Spatial"]
 
