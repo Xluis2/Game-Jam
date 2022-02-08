@@ -26,8 +26,8 @@ _global_script_class_icons={
 
 [application]
 
-config/name="New Game Project"
-run/main_scene="res://Spatial.tscn"
+config/name="The Little Pirate"
+run/main_scene="res://Menu/startmenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -45,7 +45,7 @@ window/stretch/aspect="keep"
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/vpainter/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/scatter/plugin.cfg", "res://addons/vpainter/plugin.cfg", "res://addons/zylann.hterrain/plugin.cfg" )
 
 [input]
 

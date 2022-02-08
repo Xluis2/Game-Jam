@@ -11,7 +11,7 @@ func _ready():
 	start_btn.grab_focus()
 
 func _on_StartBtn_pressed():
-	get_tree().change_scene("res://screens/Level1.tscn")
+	get_tree().change_scene("res://Sound/Islands_draft.tscn")
 
 
 func _on_SettingsBtn_pressed():

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://assets/Low polygrass/Low Grass.obj" type="ArrayMesh" id=1]
+
+[node name="Low Grass" type="MeshInstance"]
+transform = Transform( 0.07, 0, 0, 0, 0.07, 0, 0, 0, 0.07, 0, 0, 0 )
+mesh = ExtResource( 1 )
+material/0 = null
+
+[node name="Grass" type="Spatial" parent="."]
