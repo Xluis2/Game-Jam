@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Water.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Terraindata/data.hterrain" type="Resource" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Mats/Grass004_1K-PNG/Grass004_1K_NormalGL.png" type="Texture" id=10]
 [ext_resource path="res://Mats/Ground027_1K-PNG/Ground027_1K_NormalGL.png" type="Texture" id=11]
 [ext_resource path="res://Mats/Islands_draft_slot0_albedo_bump.packed_tex" type="Texture" id=12]
+[ext_resource path="res://panoramic-view-sea.jpg" type="Texture" id=13]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Islands_Rough_Draft_Plane002"
@@ -63,6 +64,15 @@ textures = [ [ ExtResource( 8 ), ExtResource( 12 ), ExtResource( 9 ), ExtResourc
 flags_transparent = true
 albedo_color = Color( 1, 1, 1, 0 )
 
+[sub_resource type="PanoramaSky" id=6]
+radiance_size = 4
+panorama = ExtResource( 13 )
+
+[sub_resource type="Environment" id=7]
+background_mode = 2
+background_sky = SubResource( 6 )
+background_sky_custom_fov = 66.2
+
 [node name="Islands_Rough_Draft" type="Spatial"]
 
 [node name="Third Attempt" type="MeshInstance" parent="."]
@@ -79,7 +89,6 @@ transform = Transform( 0.995822, 0.0913104, 6.43099e-09, -0.0584414, 0.637356, 0
 shadow_enabled = true
 
 [node name="HTerrain" type="Spatial" parent="."]
-transform = Transform( 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0 )
 script = ExtResource( 3 )
 lod_scale = 5.0
 map_scale = Vector3( 0.6, 0.5, 0.6 )
@@ -92,13 +101,13 @@ shader_type = "Classic4"
 custom_shader = null
 custom_globalmap_shader = null
 texture_set = SubResource( 4 )
-shader_params/u_ground_uv_scale_per_texture = Plane( 20, 20, 20, 20 )
+shader_params/u_ground_uv_scale_per_texture = Plane( 10, 10, 10, 10 )
 shader_params/u_depth_blending = true
 shader_params/u_triplanar = false
-shader_params/u_tile_reduction = Plane( 0, 0, 0, 0 )
+shader_params/u_tile_reduction = Plane( 2, 2, 2, 2 )
 shader_params/u_globalmap_blend_start = 1.0
-shader_params/u_globalmap_blend_distance = null
-shader_params/u_colormap_opacity_per_texture = Plane( 1, 1, 1, 1 )
+shader_params/u_globalmap_blend_distance = 0.0
+shader_params/u_colormap_opacity_per_texture = Plane( 2, 2, 2, 2 )
 
 [node name="CSGBox" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 320.868, 0, 209.566 )
@@ -109,3 +118,6 @@ width = 1000.0
 height = 1000.0
 depth = 1000.0
 material = SubResource( 5 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 7 )
