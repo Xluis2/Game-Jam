@@ -1,0 +1,8 @@
+{
+	"contains_albedo": false,
+	"resolution": 1024,
+	"src": {
+		"a": "res://Mats/Grass004_1K-PNG/Grass004_1K_Roughness.png",
+		"rgb": "res://Mats/Grass004_1K-PNG/Grass004_1K_NormalGL.png"
+	}
+}
