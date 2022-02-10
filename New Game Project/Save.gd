@@ -1,7 +1,7 @@
 extends Node
 
 const SAVEFILE = "user://SAVEFILE.save"
-onready var Player = $Player
+onready var Player = "res://Player.tscn"
 
 var game_data = {}
 
@@ -79,8 +79,8 @@ func load_save():
 	var save_data : Dictionary = str2var(data_string)
 	
 	if save_data.has("Player"):
-		Player.load_save(save_data["Player"])
-	
+#		Player.load_save(save_data["Player"])
+		print("saved")
 	print(save_data)
 	save_game.close()
 	
