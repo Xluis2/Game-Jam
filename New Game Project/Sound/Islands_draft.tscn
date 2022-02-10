@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=31 format=2]
 
 [ext_resource path="res://Water.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Terraindata/data.hterrain" type="Resource" id=2]
@@ -18,6 +18,7 @@
 [ext_resource path="res://TreePalm1.tscn" type="PackedScene" id=16]
 [ext_resource path="res://addons/scatter/src/core/scatter.gd" type="Script" id=17]
 [ext_resource path="res://addons/scatter/src/core/scatter_item.gd" type="Script" id=18]
+[ext_resource path="res://addons/zylann.scatter/scatter3d.gd" type="Script" id=19]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Islands_Rough_Draft_Plane002"
@@ -84,11 +85,11 @@ _data = {
 "tilts": PoolRealArray(  )
 }
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=12]
 render_priority = -5
 albedo_color = Color( 0.521569, 0.286275, 0.0980392, 1 )
 
-[sub_resource type="ArrayMesh" id=10]
+[sub_resource type="ArrayMesh" id=13]
 blend_shape_mode = 0
 surfaces/0 = {
 "aabb": AABB( -0.0822932, -0.00937501, -0.000811413, 0.0934705, 0.0222034, 0.436894 ),
@@ -97,7 +98,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 2194691,
 "index_count": 2496,
-"material": SubResource( 9 ),
+"material": SubResource( 12 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 2492
@@ -106,7 +107,7 @@ surfaces/0 = {
 [sub_resource type="MultiMesh" id=11]
 transform_format = 1
 visible_instance_count = 100
-mesh = SubResource( 10 )
+mesh = SubResource( 13 )
 
 [node name="Islands_Rough_Draft" type="Spatial"]
 
@@ -177,14 +178,13 @@ modifier_stack = Object(Node,"_import_path":NodePath(""),"pause_mode":0,"process
 		Make sure you have a Distribute or Create modifier at the begining of the stack.
 		","warning_ignore_no_transforms":false,"warning_ignore_no_path":true,"override_global_seed":false,"custom_seed":0,"local_space":false,"position":Vector3( 1, 1, 1 ),"rotation":Vector3( 360, 360, 360 ),"scale":Vector3( 1, 1, 1 ),"_rng":Object(RandomNumberGenerator,"seed":0,"state":-8330585842245805678,"script":null)
 )
- ],"just_created":false,"undo_redo":Object(UndoRedo,"script":null)
-)
+ ],"just_created":false,"undo_redo":null)
 
 
 [node name="ScatterItem" type="Spatial" parent="Scatter"]
 script = ExtResource( 18 )
 local_item_path = NodePath("../../palm1")
-materials = [ SubResource( 9 ) ]
+materials = [ SubResource( 12 ) ]
 merge_target_meshes = false
 cast_shadow = 1
 
@@ -196,3 +196,88 @@ __meta__ = {
 }
 
 [node name="palm1" parent="." instance=ExtResource( 16 )]
+
+[node name="Scatter3D" type="Spatial" parent="."]
+script = ExtResource( 19 )
+_scenes = [ ExtResource( 16 ) ]
+
+[node name="palm1" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.836193, 0, -0.548435, 0, 1, 0, 0.548435, 0, 0.836193, 261.252, 5.60978, 159.545 )
+
+[node name="palm2" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.38893, 0, -0.921267, 0, 1, 0, 0.921267, 0, 0.38893, 268.553, 4.83081, 152.879 )
+
+[node name="palm3" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.900098, 0, -0.435687, 0, 1, 0, 0.435687, 0, -0.900098, 263.338, 6.19965, 152.602 )
+
+[node name="palm4" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.176829, 0, -0.984242, 0, 1, 0, 0.984242, 0, 0.176829, 264.332, 5.52312, 157.184 )
+
+[node name="palm5" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.0190541, 0, 0.999818, 0, 1, 0, -0.999818, 0, -0.0190541, 263.286, 4.72616, 162.253 )
+
+[node name="palm6" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.0219387, 0, 0.999759, 0, 1, 0, -0.999759, 0, 0.0219387, 259.26, 5.03183, 162.795 )
+
+[node name="palm7" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.00581781, 0, 0.999983, 0, 1, 0, -0.999983, 0, 0.00581781, 255.672, 4.66259, 164.591 )
+
+[node name="palm8" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.677254, 0, -0.735749, 0, 1, 0, 0.735749, 0, 0.677254, 236.994, 3.76669, 158.115 )
+
+[node name="palm9" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.68904, 0, -0.724723, 0, 1, 0, 0.724723, 0, -0.68904, 239.31, 4.76159, 156.353 )
+
+[node name="palm10" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.664583, 0, -0.747215, 0, 1, 0, 0.747215, 0, 0.664583, 241.589, 5.0332, 155.364 )
+
+[node name="palm13" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.576524, 0, -0.81708, 0, 1, 0, 0.81708, 0, 0.576524, 242.549, 5.34793, 144.419 )
+
+[node name="palm14" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.973388, 0, -0.229162, 0, 1, 0, 0.229162, 0, 0.973388, 246.018, 5.12879, 145.553 )
+
+[node name="palm15" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.35508, 0, -0.934836, 0, 1, 0, 0.934836, 0, 0.35508, 248.72, 6.13572, 142.423 )
+
+[node name="palm16" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.696623, 0, 0.717437, 0, 1, 0, -0.717437, 0, -0.696623, 253.145, 6.7934, 145.259 )
+
+[node name="palm17" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.217915, 0, -0.975968, 0, 1, 0, 0.975968, 0, -0.217915, 258.921, 7.10464, 148.179 )
+
+[node name="palm18" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.246905, 0, -0.96904, 0, 1, 0, 0.96904, 0, -0.246905, 261.321, 6.68703, 151.175 )
+
+[node name="palm19" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.354503, 0, 0.935055, 0, 1, 0, -0.935055, 0, 0.354503, 267.283, 4.73445, 158.271 )
+
+[node name="palm20" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.874189, 0, 0.485586, 0, 1, 0, -0.485586, 0, -0.874189, 261.879, 4.28478, 164.792 )
+
+[node name="palm21" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.955613, 0, -0.294625, 0, 1, 0, 0.294625, 0, 0.955613, 257.818, 4.70061, 164.284 )
+
+[node name="palm22" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.606729, 0, 0.794909, 0, 1, 0, -0.794909, 0, 0.606729, 258.022, 4.23982, 165.935 )
+
+[node name="palm23" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.948815, 0, -0.315832, 0, 1, 0, 0.315832, 0, 0.948815, 259.981, 4.13834, 165.93 )
+
+[node name="palm24" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.712683, 0, -0.701486, 0, 1, 0, 0.701486, 0, -0.712683, 265.823, 4.70002, 160.342 )
+
+[node name="palm25" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.198927, 0, -0.980014, 0, 1, 0, 0.980014, 0, 0.198927, 268.185, 3.7976, 162.921 )
+
+[node name="palm26" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.25428, 0, -0.967131, 0, 1, 0, 0.967131, 0, -0.25428, 273.994, 3.23848, 157.69 )
+
+[node name="palm27" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.396872, 0, -0.917874, 0, 1, 0, 0.917874, 0, -0.396872, 277.201, 2.90311, 149.35 )
+
+[node name="palm28" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( 0.916823, 0, -0.399293, 0, 1, 0, 0.399293, 0, 0.916823, 272.699, 3.68262, 151.151 )
+
+[node name="palm29" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.375345, 0, -0.926885, 0, 1, 0, 0.926885, 0, -0.375345, 274.052, 2.96692, 141.171 )
