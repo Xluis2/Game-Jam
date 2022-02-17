@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://Menu/startmenu.gd" type="Script" id=1]
 [ext_resource path="res://SettingsMenu.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://Menu/Background.gd" type="Script" id=6]
 [ext_resource path="res://light.png" type="Texture" id=7]
 [ext_resource path="res://Menu.tres" type="Animation" id=8]
+[ext_resource path="res://Sound/A_Little_Pirate_-_Menu_v2.ogg" type="AudioStream" id=9]
 
 [sub_resource type="Shader" id=10]
 code = "shader_type canvas_item;
@@ -179,6 +180,11 @@ autoplay = "light"
 anims/RESET = SubResource( 12 )
 anims/light = SubResource( 13 )
 anims/settings = ExtResource( 8 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+volume_db = -7.866
+autoplay = true
 
 [connection signal="item_rect_changed" from="Background" to="Background" method="calculate_aspect_ratio"]
 [connection signal="pressed" from="MainMenu/StartBtn" to="." method="_on_StartBtn_pressed"]
