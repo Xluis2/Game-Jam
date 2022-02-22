@@ -124,6 +124,7 @@ __meta__ = {
 }
 
 [node name="Background" type="Sprite" parent="."]
+visible = false
 material = SubResource( 11 )
 position = Vector2( 657.5, 370 )
 scale = Vector2( 2.587, 1.816 )
@@ -375,7 +376,9 @@ margin_left = 354.0
 margin_right = 1280.0
 margin_bottom = 16.0
 size_flags_horizontal = 3
-value = 100.0
+max_value = 1.0
+step = 0.01
+value = 0.5
 
 [node name="Music_vol" type="Label" parent="SettingsMenu/MainMenu2/SettingsContainer/AudioSettings"]
 margin_top = 106.0
@@ -390,7 +393,9 @@ margin_top = 106.0
 margin_right = 1280.0
 margin_bottom = 122.0
 size_flags_horizontal = 3
-value = 100.0
+max_value = 1.0
+step = 0.01
+value = 0.5
 
 [node name="sfx_vol2" type="Label" parent="SettingsMenu/MainMenu2/SettingsContainer/AudioSettings"]
 margin_top = 212.0
@@ -405,7 +410,9 @@ margin_top = 212.0
 margin_right = 1280.0
 margin_bottom = 228.0
 size_flags_horizontal = 3
-value = 80.0
+max_value = 1.0
+step = 0.01
+value = 0.5
 
 [node name="ControlsSettings" type="GridContainer" parent="SettingsMenu/MainMenu2/SettingsContainer"]
 margin_top = 420.0
@@ -471,7 +478,6 @@ anims/settings = ExtResource( 8 )
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
-volume_db = -7.866
 autoplay = true
 bus = "Music"
 

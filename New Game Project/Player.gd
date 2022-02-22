@@ -49,6 +49,14 @@ func _process(delta):
 		camera.global_transform = head.global_transform
 	pass
 	
+	if Input.is_action_just_pressed("ui_cancel"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
+func _unhandled_input(event):
+	if event.is_action_pressed("ui_cancel"):
+		$Head/PauseMenu.pause()
+	
+	
 func _physics_process(delta):
 	progress += 1 * delta
 	var position = global_transform.basis
@@ -73,6 +81,8 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		snap = Vector3.ZERO
 		gravity_vec = Vector3.UP * jump
+	
+	
 	
 	
 	
@@ -106,3 +116,9 @@ func load_save(data):
 	global_transform.origin.z = data["pos_z"]
 	
 
+
+
+func _on_Area_area_entered(area):
+	var collider = area
+	if collider.is_in_group("Water"):
+		print("Touching water")

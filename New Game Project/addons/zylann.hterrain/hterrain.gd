@@ -141,7 +141,7 @@ const _DEBUG_AABB = false
 signal transform_changed(global_transform)
 
 export(float, 0.0, 1.0) var ambient_wind := 0.0 setget set_ambient_wind
-export(int, 2, 5) var lod_scale := 2.0 setget set_lod_scale, get_lod_scale
+export(int, 2, 10) var lod_scale := 2.0 setget set_lod_scale, get_lod_scale
 
 # TODO Replace with `size` in world units?
 # Prefer using this instead of scaling the node's transform.

@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://Water.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Terraindata/data.hterrain" type="Resource" id=2]
@@ -19,7 +19,12 @@
 [ext_resource path="res://Palm2.tscn" type="PackedScene" id=17]
 [ext_resource path="res://Grass.tscn" type="PackedScene" id=18]
 [ext_resource path="res://addons/zylann.scatter/scatter3d.gd" type="Script" id=19]
-[ext_resource path="res://assets/Low polygrass/Low Grass.obj" type="ArrayMesh" id=20]
+[ext_resource path="res://addons/zylann.hterrain/hterrain_detail_layer.gd" type="Script" id=20]
+[ext_resource path="res://addons/zylann.hterrain/tools/icons/icon_detail_layer_node.svg" type="Texture" id=21]
+[ext_resource path="res://grass_blade.png" type="Texture" id=22]
+[ext_resource path="res://grass_blade (1).png" type="Texture" id=23]
+[ext_resource path="res://assets/BigRock2.tscn" type="PackedScene" id=24]
+[ext_resource path="res://assets/Rock1.tscn" type="PackedScene" id=25]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_name = "Islands_Rough_Draft_Plane002"
@@ -89,12 +94,13 @@ background_mode = 2
 background_sky = SubResource( 6 )
 background_sky_custom_fov = 66.2
 ambient_light_color = Color( 0.913725, 0.92549, 0.8, 1 )
-ambient_light_sky_contribution = 0.57
 fog_color = Color( 0.501961, 0.6, 0.701961, 1 )
 fog_sun_color = Color( 1, 0.901961, 0.701961, 1 )
 fog_depth_begin = 0.0
 fog_depth_end = 288.7
-tonemap_mode = 3
+auto_exposure_scale = 0.5
+auto_exposure_min_luma = 0.0
+ss_reflections_enabled = true
 ss_reflections_fade_in = 1.89563e-05
 ss_reflections_fade_out = 337.794
 ssao_enabled = true
@@ -107,7 +113,7 @@ glow_intensity = 6.46
 glow_strength = 1.05
 glow_bloom = 0.18
 glow_blend_mode = 0
-adjustment_contrast = 0.62
+adjustment_brightness = 0.57
 
 [node name="Islands_Rough_Draft" type="Spatial"]
 
@@ -131,31 +137,54 @@ directional_shadow_depth_range = 1
 
 [node name="HTerrain" type="Spatial" parent="."]
 script = ExtResource( 3 )
+ambient_wind = 0.08
 lod_scale = 5.0
 map_scale = Vector3( 0.6, 0.5, 0.6 )
 _terrain_data = ExtResource( 2 )
-chunk_size = 16
+chunk_size = 32
 collision_enabled = true
 collision_layer = 1
 collision_mask = 1
-shader_type = "Classic4"
+shader_type = "LowPoly"
 custom_shader = null
 custom_globalmap_shader = null
 texture_set = SubResource( 4 )
-shader_params/u_ground_uv_scale_per_texture = Plane( 10, 10, 10, 10 )
-shader_params/u_depth_blending = true
-shader_params/u_triplanar = false
-shader_params/u_tile_reduction = Plane( 2, 2, 2, 2 )
-shader_params/u_globalmap_blend_start = 1.0
-shader_params/u_globalmap_blend_distance = 0.0
-shader_params/u_colormap_opacity_per_texture = Plane( 2, 2, 2, 2 )
+
+[node name="HTerrainDetailLayer" type="Spatial" parent="HTerrain"]
+visible = false
+script = ExtResource( 20 )
+__meta__ = {
+"_editor_icon": ExtResource( 21 )
+}
+texture = ExtResource( 22 )
+view_distance = 50.0
+density = 8.0
+shader_params/u_globalmap_tint_bottom = 0.0
+shader_params/u_globalmap_tint_top = 0.0
+shader_params/u_bottom_ao = 0.522
+shader_params/u_instance_scale = Vector3( 0.5, 0.5, 0.5 )
+
+[node name="HTerrainDetailLayer2" type="Spatial" parent="HTerrain"]
+visible = false
+script = ExtResource( 20 )
+__meta__ = {
+"_editor_icon": ExtResource( 21 )
+}
+layer_index = 1
+texture = ExtResource( 23 )
+view_distance = 30.0
+density = 2.067
+shader_params/u_globalmap_tint_bottom = null
+shader_params/u_globalmap_tint_top = null
+shader_params/u_bottom_ao = null
+shader_params/u_instance_scale = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="Scatter3D" type="Spatial" parent="."]
 script = ExtResource( 19 )
-_scenes = [ ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ) ]
+_scenes = [ ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 24 ), ExtResource( 25 ) ]
 
 [node name="palm1" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( 0.836193, 0, -0.548435, 0, 1, 0, 0.548435, 0, 0.836193, 261.252, 5.60978, 159.545 )
+transform = Transform( 0.836193, 0, -0.548435, 0, 1, 0, 0.548435, 0, 0.836193, 265.117, 5.40729, 161.257 )
 
 [node name="palm2" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.38893, 0, -0.921267, 0, 1, 0, 0.921267, 0, 0.38893, 268.553, 4.83081, 152.879 )
@@ -172,17 +201,8 @@ transform = Transform( -0.0190541, 0, 0.999818, 0, 1, 0, -0.999818, 0, -0.019054
 [node name="palm8" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.677254, 0, -0.735749, 0, 1, 0, 0.735749, 0, 0.677254, 236.994, 3.76669, 158.115 )
 
-[node name="palm9" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( -0.68904, 0, -0.724723, 0, 1, 0, 0.724723, 0, -0.68904, 239.31, 4.76159, 156.353 )
-
-[node name="palm10" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( 0.664583, 0, -0.747215, 0, 1, 0, 0.747215, 0, 0.664583, 241.589, 5.0332, 155.364 )
-
 [node name="palm13" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.576524, 0, -0.81708, 0, 1, 0, 0.81708, 0, 0.576524, 242.549, 5.34793, 144.419 )
-
-[node name="palm15" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( 0.35508, 0, -0.934836, 0, 1, 0, 0.934836, 0, 0.35508, 248.72, 6.13572, 142.423 )
 
 [node name="palm16" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( -0.696623, 0, 0.717437, 0, 1, 0, -0.717437, 0, -0.696623, 253.145, 6.7934, 145.259 )
@@ -223,17 +243,11 @@ transform = Transform( 0.0272369, 0, -0.999629, 0, 1, 0, 0.999629, 0, 0.0272369,
 [node name="palm32" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.00359554, 0, -0.999994, 0, 1, 0, 0.999994, 0, 0.00359554, 239.728, 4.8182, 159.703 )
 
-[node name="palm33" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( -0.957122, 0, 0.289684, 0, 1, 0, -0.289684, 0, -0.957122, 241.947, 5, 157.058 )
-
 [node name="palm34" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.0381815, 0, -0.999271, 0, 1, 0, 0.999271, 0, 0.0381815, 242.412, 4.98828, 159.904 )
 
 [node name="Palm2" parent="Scatter3D" instance=ExtResource( 17 )]
 transform = Transform( -0.694933, 0, -0.719075, 0, 1, 0, 0.719075, 0, -0.694933, 256.21, 6.33406, 158.388 )
-
-[node name="palm35" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( -0.229284, 0, 0.97336, 0, 1, 0, -0.97336, 0, -0.229284, 243.138, 5.0541, 153.104 )
 
 [node name="Palm3" parent="Scatter3D" instance=ExtResource( 17 )]
 transform = Transform( 0.755976, 0, -0.654599, 0, 1, 0, 0.654599, 0, 0.755976, 255.329, 6.06899, 159.313 )
@@ -261,423 +275,477 @@ transform = Transform( -0.711463, 0, -0.702724, 0, 1, 0, 0.702724, 0, -0.711463,
 
 [node name="Low Grass3" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0250589, 0, -0.016494, 0, 0.03, 0, 0.016494, 0, -0.0250589, 249.921, 5, 160.937 )
+visible = false
 
 [node name="Low Grass8" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.024953, 0, -0.0166537, 0, 0.03, 0, 0.0166537, 0, -0.024953, 250.142, 5, 161.412 )
+visible = false
 
 [node name="Low Grass9" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0152881, 0, -0.0258123, 0, 0.03, 0, 0.0258123, 0, 0.0152881, 250.822, 5, 161.135 )
+visible = false
 
 [node name="Low Grass10" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0286443, 0, 0.00891636, 0, 0.03, 0, -0.00891636, 0, 0.0286443, 250.104, 5, 160.248 )
+visible = false
 
-[node name="Low Grass" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00113269, 0, 0.0299786, 0, 0.03, 0, -0.0299786, 0, -0.00113269, 249.434, 5, 160.376 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass5" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass5" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0250858, 0, -0.0164531, 0, 0.03, 0, 0.0164531, 0, 0.0250858, 250.865, 5, 159.697 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass6" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass6" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0116679, 0, -0.027638, 0, 0.03, 0, 0.027638, 0, 0.0116679, 250.857, 5, 160.488 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass11" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass11" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00530487, 0, -0.0295272, 0, 0.03, 0, 0.0295272, 0, 0.00530487, 251.197, 5, 161.407 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass12" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass12" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.000571624, 0, 0.0299946, 0, 0.03, 0, -0.0299946, 0, -0.000571624, 252.057, 5.00295, 161.004 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass16" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass16" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0206712, 0, -0.0217417, 0, 0.03, 0, 0.0217417, 0, -0.0206712, 251.42, 5, 159.482 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass17" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass17" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0199375, 0, -0.0224164, 0, 0.03, 0, 0.0224164, 0, 0.0199375, 250.98, 5, 161.775 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="palm11" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
+[node name="palm11" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( -0.98488, 0, -0.173236, 0, 1, 0, 0.173236, 0, -0.98488, 244.005, 5.04421, 146.479 )
 
-[node name="Palm5" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
+[node name="Palm5" parent="Scatter3D" instance=ExtResource( 17 )]
 transform = Transform( -0.63041, 0, 0.776262, 0, 1, 0, -0.776262, 0, -0.63041, 257.454, 7.24695, 151.853 )
 
-[node name="palm12" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
+[node name="palm12" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.576524, 0, -0.81708, 0, 1, 0, 0.81708, 0, 0.576524, 258.008, 7.17635, 152.377 )
 
-[node name="palm36" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
+[node name="palm36" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.973388, 0, -0.229162, 0, 1, 0, 0.229162, 0, 0.973388, 256.985, 6.88232, 155.384 )
 
-[node name="Palm14" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
+[node name="Palm14" parent="Scatter3D" instance=ExtResource( 17 )]
 transform = Transform( 0.35508, 0, -0.934836, 0, 1, 0, 0.934836, 0, 0.35508, 255.026, 7.00261, 148.608 )
 
-[node name="Palm15" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
-transform = Transform( -0.696623, 0, 0.717437, 0, 1, 0, -0.717437, 0, -0.696623, 251.432, 6.44685, 142.875 )
-
-[node name="palm37" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
-transform = Transform( -0.217915, 0, -0.975968, 0, 1, 0, 0.975968, 0, -0.217915, 249.386, 6.19493, 142.333 )
-
-[node name="Low Grass18" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass18" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00740716, 0, -0.0290712, 0, 0.03, 0, 0.0290712, 0, -0.00740716, 249.386, 5, 159.768 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass19" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass19" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0106351, 0, 0.0280516, 0, 0.03, 0, -0.0280516, 0, 0.0106351, 250.4, 5, 159.381 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass23" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass23" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0284645, 0, -0.00947496, 0, 0.03, 0, 0.00947496, 0, 0.0284645, 248.959, 5, 159.86 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass24" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass24" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0213805, 0, -0.0210446, 0, 0.03, 0, 0.0210446, 0, -0.0213805, 249.102, 5, 160.302 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass25" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass25" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00596782, 0, -0.0294004, 0, 0.03, 0, 0.0294004, 0, 0.00596782, 249.385, 5, 160.701 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass26" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass26" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00762839, 0, -0.0290139, 0, 0.03, 0, 0.0290139, 0, -0.00762839, 249.761, 5, 161.409 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass27" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass27" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0119061, 0, -0.0275362, 0, 0.03, 0, 0.0275362, 0, -0.0119061, 250.267, 5, 161.778 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
 [node name="Low Grass28" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0154772, 0, 0.0256993, 0, 0.03, 0, -0.0256993, 0, -0.0154772, 245.656, 4.85525, 156.34 )
+visible = false
 
 [node name="Low Grass29" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0250589, 0, -0.016494, 0, 0.03, 0, 0.016494, 0, -0.0250589, 245.861, 4.85525, 157.574 )
+visible = false
 
 [node name="Low Grass30" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00345483, 0, 0.0298004, 0, 0.03, 0, -0.0298004, 0, -0.00345483, 247.155, 4.85525, 157.215 )
+visible = false
 
 [node name="Low Grass31" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.024953, 0, -0.0166537, 0, 0.03, 0, 0.0166537, 0, -0.024953, 246.082, 4.85525, 158.049 )
+visible = false
 
 [node name="Low Grass32" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0152881, 0, -0.0258123, 0, 0.03, 0, 0.0258123, 0, 0.0152881, 246.762, 4.85525, 157.772 )
+visible = false
 
 [node name="Low Grass33" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0286443, 0, 0.00891636, 0, 0.03, 0, -0.00891636, 0, 0.0286443, 246.044, 4.85525, 156.885 )
+visible = false
 
 [node name="Low Grass34" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0250858, 0, -0.0164531, 0, 0.03, 0, 0.0164531, 0, 0.0250858, 246.805, 4.85525, 156.334 )
+visible = false
 
 [node name="Low Grass35" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0116679, 0, -0.027638, 0, 0.03, 0, 0.027638, 0, 0.0116679, 246.797, 4.85525, 157.125 )
+visible = false
 
 [node name="Low Grass36" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0270029, 0, -0.0130706, 0, 0.03, 0, 0.0130706, 0, -0.0270029, 247.354, 4.85525, 157.469 )
+visible = false
 
 [node name="Low Grass37" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00530487, 0, -0.0295272, 0, 0.03, 0, 0.0295272, 0, 0.00530487, 247.137, 4.85525, 158.043 )
+visible = false
 
 [node name="Low Grass38" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.000571624, 0, 0.0299946, 0, 0.03, 0, -0.0299946, 0, -0.000571624, 247.997, 4.8582, 157.641 )
+visible = false
 
 [node name="Low Grass39" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00065816, 0, 0.0299928, 0, 0.03, 0, -0.0299928, 0, 0.00065816, 247.793, 4.85525, 156.223 )
+visible = false
 
 [node name="Low Grass40" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.000174534, 0, 0.0299995, 0, 0.03, 0, -0.0299995, 0, 0.000174534, 247.691, 4.85525, 156.771 )
+visible = false
 
 [node name="Low Grass41" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0203176, 0, -0.0220725, 0, 0.03, 0, 0.0220725, 0, 0.0203176, 247.451, 4.85525, 156.59 )
+visible = false
 
 [node name="Low Grass42" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0206712, 0, -0.0217417, 0, 0.03, 0, 0.0217417, 0, -0.0206712, 247.36, 4.85525, 156.119 )
+visible = false
 
 [node name="Low Grass43" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0199375, 0, -0.0224164, 0, 0.03, 0, 0.0224164, 0, 0.0199375, 246.92, 4.85525, 158.412 )
+visible = false
 
 [node name="Low Grass44" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00740716, 0, -0.0290712, 0, 0.03, 0, 0.0290712, 0, -0.00740716, 245.326, 4.85525, 156.404 )
+visible = false
 
 [node name="Low Grass45" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0106351, 0, 0.0280516, 0, 0.03, 0, -0.0280516, 0, 0.0106351, 246.34, 4.85525, 156.018 )
+visible = false
 
 [node name="Low Grass46" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0262257, 0, 0.0145676, 0, 0.03, 0, -0.0145676, 0, -0.0262257, 246.138, 4.85525, 155.604 )
+visible = false
 
 [node name="Low Grass47" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0286684, 0, -0.00883874, 0, 0.03, 0, 0.00883874, 0, 0.0286684, 245.66, 4.85525, 155.722 )
+visible = false
 
 [node name="Low Grass48" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0182019, 0, 0.0238473, 0, 0.03, 0, -0.0238473, 0, 0.0182019, 245.041, 4.85525, 155.821 )
+visible = false
 
 [node name="Low Grass49" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0284645, 0, -0.00947496, 0, 0.03, 0, 0.00947496, 0, 0.0284645, 244.899, 4.85525, 156.496 )
+visible = false
 
 [node name="Low Grass50" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0213805, 0, -0.0210446, 0, 0.03, 0, 0.0210446, 0, -0.0213805, 245.042, 4.85525, 156.938 )
+visible = false
 
 [node name="Low Grass51" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00596782, 0, -0.0294004, 0, 0.03, 0, 0.0294004, 0, 0.00596782, 245.325, 4.85525, 157.338 )
+visible = false
 
 [node name="Low Grass52" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00762839, 0, -0.0290139, 0, 0.03, 0, 0.0290139, 0, -0.00762839, 245.701, 4.85525, 158.045 )
+visible = false
 
 [node name="Low Grass53" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0119061, 0, -0.0275362, 0, 0.03, 0, 0.0275362, 0, -0.0119061, 246.206, 4.85525, 158.415 )
+visible = false
 
-[node name="Low Grass2" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass2" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0275047, 0, -0.0119788, 0, 0.03, 0, 0.0119788, 0, 0.0275047, 250.213, 5, 159.231 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass20" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass20" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0112603, 0, -0.0278066, 0, 0.03, 0, 0.0278066, 0, -0.0112603, 249.935, 5, 159.254 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass21" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass21" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0174411, 0, 0.0244092, 0, 0.03, 0, -0.0244092, 0, -0.0174411, 249.599, 5, 159.476 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass22" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass22" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0224941, 0, -0.0198498, 0, 0.03, 0, 0.0198498, 0, -0.0224941, 249.864, 5, 159.711 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass54" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass54" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00811976, 0, -0.0288803, 0, 0.03, 0, 0.0288803, 0, -0.00811976, 250.085, 5, 158.774 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass55" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass55" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0268512, 0, 0.0133795, 0, 0.03, 0, -0.0133795, 0, -0.0268512, 251.089, 5, 157.126 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass56" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass56" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.000817106, 0, -0.0299889, 0, 0.03, 0, 0.0299889, 0, 0.000817106, 251.924, 5, 157.336 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass57" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass57" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.000107866, 0, -0.0299998, 0, 0.03, 0, 0.0299998, 0, 0.000107866, 251.09, 5, 157.597 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass58" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass58" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0287137, 0, 0.00869053, 0, 0.03, 0, -0.00869053, 0, -0.0287137, 250.942, 5, 157.465 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass59" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass59" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00114545, 0, -0.0299781, 0, 0.03, 0, 0.0299781, 0, 0.00114545, 251.744, 5, 157.975 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass60" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass60" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00082313, 0, 0.0299887, 0, 0.03, 0, -0.0299887, 0, 0.00082313, 251.756, 5, 157.813 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass61" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass61" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.020848, 0, -0.0215722, 0, 0.03, 0, 0.0215722, 0, -0.020848, 252.619, 5.12066, 157.554 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass62" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass62" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00687852, 0, 0.0292008, 0, 0.03, 0, -0.0292008, 0, -0.00687852, 251.812, 5.02539, 156.81 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass64" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass64" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0248995, 0, -0.0167337, 0, 0.03, 0, 0.0167337, 0, -0.0248995, 247.84, 5.00104, 148.9 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass71" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass71" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0281342, 0, -0.0104146, 0, 0.03, 0, 0.0104146, 0, 0.0281342, 251.913, 5.21044, 152.3 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass73" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass73" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00619758, 0, -0.0293529, 0, 0.03, 0, 0.0293529, 0, -0.00619758, 250.458, 5.00334, 152.897 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass75" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass75" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0251826, 0, -0.0163044, 0, 0.03, 0, 0.0163044, 0, -0.0251826, 249.764, 5, 153.011 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass76" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass76" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0213439, 0, -0.0210817, 0, 0.03, 0, 0.0210817, 0, -0.0213439, 250.962, 5.02264, 152.874 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass77" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass77" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0262733, 0, -0.0144815, 0, 0.03, 0, 0.0144815, 0, -0.0262733, 251.108, 5.02006, 153.647 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass78" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass78" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0241585, 0, 0.0177867, 0, 0.03, 0, -0.0177867, 0, 0.0241585, 252.125, 5.20999, 153.264 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass79" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass79" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0255907, 0, -0.0156561, 0, 0.03, 0, 0.0156561, 0, 0.0255907, 251.679, 5.08866, 154.54 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass80" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass80" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0154772, 0, 0.0256993, 0, 0.03, 0, -0.0256993, 0, -0.0154772, 251.081, 5.00366, 155.678 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass81" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass81" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0250589, 0, -0.016494, 0, 0.03, 0, 0.016494, 0, -0.0250589, 247.517, 5, 151.44 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass82" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass82" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00345483, 0, 0.0298004, 0, 0.03, 0, -0.0298004, 0, -0.00345483, 246.035, 5, 151.642 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass83" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass83" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0256489, 0, -0.0155606, 0, 0.03, 0, 0.0155606, 0, 0.0256489, 246.628, 5, 150.763 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass84" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass84" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.028235, 0, -0.0101382, 0, 0.03, 0, 0.0101382, 0, -0.028235, 246.793, 5, 151.811 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass85" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass85" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0240516, 0, -0.017931, 0, 0.03, 0, 0.017931, 0, 0.0240516, 248.172, 5, 150.964 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass87" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass87" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.000272449, 0, -0.0299988, 0, 0.03, 0, 0.0299988, 0, -0.000272449, 248.58, 5.02649, 148.792 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass88" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass88" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0254912, 0, -0.0158177, 0, 0.03, 0, 0.0158177, 0, 0.0254912, 252.402, 5.43135, 151.822 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass89" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass89" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0296713, 0, -0.0044287, 0, 0.03, 0, 0.0044287, 0, 0.0296713, 252.027, 5.282, 151.772 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass92" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass92" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00446083, 0, 0.0296665, 0, 0.03, 0, -0.0296665, 0, 0.00446083, 247.439, 5, 153.827 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass93" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass93" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0297396, 0, 0.00394399, 0, 0.03, 0, -0.00394399, 0, 0.0297396, 247.311, 5, 153.478 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass94" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass94" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00428817, 0, -0.0296919, 0, 0.03, 0, 0.0296919, 0, 0.00428817, 249.937, 5.1556, 148.531 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass95" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass95" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.00630838, 0, -0.0293292, 0, 0.03, 0, 0.0293292, 0, -0.00630838, 249.458, 5.09739, 148.565 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass63" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass63" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0109, 0, -0.0279498, 0, 0.03, 0, 0.0279498, 0, -0.0109, 247.123, 5, 150.096 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass65" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass65" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0276712, 0, 0.0115891, 0, 0.03, 0, -0.0115891, 0, 0.0276712, 247.881, 5, 150.07 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass66" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass66" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0214725, 0, -0.0209507, 0, 0.03, 0, 0.0209507, 0, 0.0214725, 253.437, 6.22094, 150.432 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass67" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass67" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0299316, 0, 0.0020246, 0, 0.03, 0, -0.0020246, 0, 0.0299316, 254.162, 6.4132, 151.958 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass68" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass68" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.00499308, 0, -0.0295816, 0, 0.03, 0, 0.0295816, 0, 0.00499308, 253.854, 6.29547, 151.544 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass69" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass69" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0287945, 0, 0.0084188, 0, 0.03, 0, -0.0084188, 0, -0.0287945, 254.136, 6.50236, 151.302 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass70" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass70" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0252038, 0, 0.0162717, 0, 0.03, 0, -0.0162717, 0, 0.0252038, 246.405, 5, 148.615 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass86" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass86" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.025006, 0, 0.016574, 0, 0.03, 0, -0.016574, 0, -0.025006, 245.844, 5, 149.366 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Palm16" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
+[node name="Palm16" parent="Scatter3D" instance=ExtResource( 17 )]
 transform = Transform( -0.581672, 0, 0.813423, 0, 1, 0, -0.813423, 0, -0.581672, 242.503, 5.07164, 147.24 )
 
-[node name="palm38" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
+[node name="palm38" parent="Scatter3D" instance=ExtResource( 16 )]
 transform = Transform( 0.395606, 0, 0.91842, 0, 1, 0, -0.91842, 0, 0.395606, 243.019, 5.03015, 148.273 )
 
-[node name="Palm17" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
-transform = Transform( 0.999768, 0, -0.0215244, 0, 1, 0, 0.0215244, 0, 0.999768, 249.244, 5.90397, 144.671 )
-
-[node name="Low Grass96" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass96" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0259337, 0, -0.0150812, 0, 0.03, 0, 0.0150812, 0, -0.0259337, 249.116, 5, 155.203 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass97" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass97" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.029264, 0, -0.00660423, 0, 0.03, 0, 0.00660423, 0, -0.029264, 248.748, 5, 155.257 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass98" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass98" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( -0.0156025, 0, 0.0256235, 0, 0.03, 0, -0.0256235, 0, -0.0156025, 254.183, 6.22477, 155.4 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
 
-[node name="Low Grass99" type="MeshInstance" parent="Scatter3D" instance=ExtResource( 18 )]
+[node name="Low Grass99" parent="Scatter3D" instance=ExtResource( 18 )]
 transform = Transform( 0.0290148, 0, 0.00762493, 0, 0.03, 0, -0.00762493, 0, 0.0290148, 249.791, 5, 154.32 )
-mesh = ExtResource( 20 )
+visible = false
 material/0 = SubResource( 10 )
+
+[node name="Palm6" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
+transform = Transform( -0.933961, 0, -0.357376, 0, 1, 0, 0.357376, 0, -0.933961, 253.614, 4.92495, 134.129 )
+
+[node name="palm7" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.483711, 0, 0.875228, 0, 1, 0, -0.875228, 0, -0.483711, 266.427, 2.89868, 133.193 )
+
+[node name="palm14" type="Spatial" parent="Scatter3D" instance=ExtResource( 16 )]
+transform = Transform( -0.512205, 0, 0.858863, 0, 1, 0, -0.858863, 0, -0.512205, 270.876, 3.6376, 143.939 )
+
+[node name="Palm19" type="Spatial" parent="Scatter3D" instance=ExtResource( 17 )]
+transform = Transform( -0.998627, 0, 0.0523851, 0, 1, 0, -0.0523851, 0, -0.998627, 256.431, 5.44567, 136.809 )
+
+[node name="Rock1" type="Spatial" parent="Scatter3D" instance=ExtResource( 25 )]
+transform = Transform( -0.108369, 0, -0.994111, 0, 1, 0, 0.994111, 0, -0.108369, 241.988, 5.14359, 152.081 )
+
+[node name="Rock2" type="Spatial" parent="Scatter3D" instance=ExtResource( 25 )]
+transform = Transform( -0.949018, 0, 0.315223, 0, 1, 0, -0.315223, 0, -0.949018, 246.687, 5.42421, 144.581 )
+
+[node name="Rock3" type="Spatial" parent="Scatter3D" instance=ExtResource( 25 )]
+transform = Transform( 0.091233, 0, 0.99583, 0, 1, 0, -0.99583, 0, 0.091233, 254.744, 6.72941, 152.1 )
+
+[node name="Rock4" type="Spatial" parent="Scatter3D" instance=ExtResource( 25 )]
+transform = Transform( 0.966996, 0, -0.25479, 0, 1, 0, 0.25479, 0, 0.966996, 234.577, 4.71285, 152.611 )
+
+[node name="BigRock2" type="Spatial" parent="Scatter3D" instance=ExtResource( 24 )]
+transform = Transform( 0.84044, 0, 0.541904, 0, 1, 0, -0.541904, 0, 0.84044, 235.079, 5.68417, 145.573 )
+
+[node name="BigRock4" type="Spatial" parent="Scatter3D" instance=ExtResource( 24 )]
+transform = Transform( -0.587309, 0, -0.809363, 0, 1, 0, 0.809363, 0, -0.587309, 264.584, 5.73196, 146.554 )
+
+[node name="BigRock3" type="Spatial" parent="Scatter3D" instance=ExtResource( 24 )]
+transform = Transform( 0.705455, 0, -0.708755, 0, 1, 0, 0.708755, 0, 0.705455, 248.405, 6.09034, 139.809 )
 
 [node name="CSGBox" type="CSGBox" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 320.868, 0, 209.566 )
