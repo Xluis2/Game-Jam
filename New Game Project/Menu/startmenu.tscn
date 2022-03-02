@@ -124,7 +124,6 @@ __meta__ = {
 }
 
 [node name="Background" type="Sprite" parent="."]
-visible = false
 material = SubResource( 11 )
 position = Vector2( 657.5, 370 )
 scale = Vector2( 2.587, 1.816 )

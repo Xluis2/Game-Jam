@@ -1,0 +1,6 @@
+[gd_resource type="SphereMesh" format=2]
+
+[resource]
+flip_faces = true
+radius = 2.0
+height = 4.0

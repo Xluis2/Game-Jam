@@ -1,13 +1,36 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Player.gd" type="Script" id=1]
 [ext_resource path="res://PauseMenu.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Shaders/new_shader.tres" type="Shader" id=3]
+[ext_resource path="res://StencilCamera.gd" type="Script" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.5
 
 [sub_resource type="CapsuleMesh" id=2]
 radius = 0.5
+
+[sub_resource type="Environment" id=6]
+background_mode = 1
+glow_levels/1 = true
+glow_levels/2 = true
+glow_levels/3 = false
+glow_levels/5 = false
+glow_intensity = 0.39
+glow_strength = 0.81
+glow_blend_mode = 0
+
+[sub_resource type="ViewportTexture" id=8]
+viewport_path = NodePath("StencilViewport")
+
+[sub_resource type="ShaderMaterial" id=9]
+resource_local_to_scene = true
+shader = ExtResource( 3 )
+shader_param/stencil_tex = SubResource( 8 )
+
+[sub_resource type="ViewportTexture" id=7]
+viewport_path = NodePath("PortalViewport")
 
 [node name="Player" type="KinematicBody" groups=["saveable"]]
 script = ExtResource( 1 )
@@ -25,7 +48,7 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 
 [node name="Camera" type="Camera" parent="Head"]
-current = true
+cull_mask = 1048559
 fov = 90.0
 
 [node name="PauseMenu" parent="Head" instance=ExtResource( 2 )]
@@ -35,5 +58,37 @@ fov = 90.0
 [node name="CollisionShape2" type="CollisionShape" parent="Area"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0 )
 shape = SubResource( 1 )
+
+[node name="StencilViewport" type="Viewport" parent="."]
+size = Vector2( 1366, 768 )
+render_target_update_mode = 3
+
+[node name="StencilCamera" type="Camera" parent="StencilViewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.498627, 0 )
+cull_mask = 16
+environment = SubResource( 6 )
+fov = 90.0
+script = ExtResource( 4 )
+main_cam_path = NodePath("../../Head/Camera")
+
+[node name="PortalViewport" type="Viewport" parent="."]
+size = Vector2( 1366, 768 )
+render_target_update_mode = 3
+
+[node name="PortalCamera" type="Camera" parent="PortalViewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.498627, 0 )
+cull_mask = 1048559
+fov = 90.0
+
+[node name="TextureRect" type="TextureRect" parent="."]
+material = SubResource( 9 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = SubResource( 7 )
+stretch_mode = 1
+flip_v = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [connection signal="area_entered" from="Area" to="." method="_on_Area_area_entered"]

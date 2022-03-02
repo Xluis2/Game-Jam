@@ -4,8 +4,8 @@ var speed = 7
 const ACCEL_DEFAULT = 7
 const ACCEL_AIR = 1
 onready var accel = ACCEL_DEFAULT
-var gravity = 9.8
-var jump = 5
+var gravity = 12
+var jump = 6
 
 var cam_accel = 40
 var mouse_sense = 0.1
@@ -29,6 +29,7 @@ func _ready():
 	#hides the cursor
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	GlobalSettings.connect("mouse_sens_updated", self, "_on_mouse_sense_updated")
+	GlobalSettings.portal_camera = $PortalViewport/PortalCamera
 
 func _input(event):
 	#get mouse input for camera rotation

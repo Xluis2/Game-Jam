@@ -1,5 +1,7 @@
 extends Node
 
+var portal_camera: Camera
+
 signal mouse_sens_updated(value)
 
 func toggle_fullscreen(value):
@@ -33,4 +35,6 @@ func update_mouse_sens(value):
 	emit_signal("mouse_sens_updated", value)
 	Save.game_data.mouse_sens = value
 	Save.save_data()
+
+
 

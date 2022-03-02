@@ -1,0 +1,72 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Shaders/MakeMeshVisible.gd" type="Script" id=2]
+[ext_resource path="res://Portal.tscn" type="PackedScene" id=3]
+
+[sub_resource type="SpatialMaterial" id=1]
+albedo_color = Color( 0.0627451, 0.266667, 0.109804, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.0627451, 0.0941176, 0.266667, 1 )
+
+[sub_resource type="CubeMesh" id=8]
+
+[sub_resource type="SpatialMaterial" id=7]
+flags_unshaded = true
+albedo_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="CubeMesh" id=9]
+
+[sub_resource type="SpatialMaterial" id=10]
+albedo_color = Color( 0.635294, 0.145098, 0.533333, 1 )
+
+[node name="Spatial" type="Spatial"]
+
+[node name="CSGBox" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.455853, 0.124485, 0.17154 )
+use_collision = true
+width = 12.9038
+height = 0.578007
+depth = 10.3198
+material = SubResource( 1 )
+
+[node name="CSGBox2" type="CSGBox" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.455853, 0.124485, -18.456 )
+use_collision = true
+width = 12.9038
+height = 0.578007
+depth = 10.3198
+material = SubResource( 5 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 0.976368, -0.216116, 0, 0.153862, 0.695116, 0.70224, -0.151765, -0.685645, 0.71194, -0.286339, 3.72586, -0.816053 )
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.2494, 0 )
+
+[node name="Portal" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96659, 3.8376 )
+
+[node name="Portal2" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.90821, -18.5482 )
+current = false
+other_portal_path = NodePath("../Portal")
+
+[node name="Spatial" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Spatial"]
+transform = Transform( 0.999, 0, 0, 0, 0.999, 0, 0, 0, 0.999, 2, 1, 0 )
+layers = 16
+mesh = SubResource( 8 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 7 )
+script = ExtResource( 2 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0 )
+mesh = SubResource( 9 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 10 )
+script = ExtResource( 2 )

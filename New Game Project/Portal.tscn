@@ -1,0 +1,70 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Shaders/Portal.gd" type="Script" id=1]
+[ext_resource path="res://Stencilmat.tres" type="SphereMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+flags_unshaded = true
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_unshaded = true
+
+[sub_resource type="CylinderMesh" id=5]
+top_radius = 1.3
+bottom_radius = 0.5
+height = 0.1
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_unshaded = true
+
+[sub_resource type="SphereShape" id=7]
+radius = 0.391701
+
+[sub_resource type="SphereShape" id=8]
+radius = 1.55799
+
+[node name="Portal" type="MeshInstance"]
+layers = 16
+cast_shadow = 0
+mesh = ExtResource( 2 )
+material/0 = SubResource( 3 )
+script = ExtResource( 1 )
+current = true
+other_portal_path = NodePath("../Portal2")
+
+[node name="Helper" type="Spatial" parent="."]
+
+[node name="inside" type="MeshInstance" parent="."]
+visible = false
+layers = 16
+cast_shadow = 0
+mesh = ExtResource( 2 )
+skeleton = NodePath("../..")
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="inside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.273664, 0 )
+layers = 16
+cast_shadow = 0
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="inside"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.40207, 0 )
+layers = 16
+cast_shadow = 0
+mesh = SubResource( 5 )
+material/0 = SubResource( 6 )
+
+[node name="TransferArea" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="TransferArea"]
+shape = SubResource( 7 )
+
+[node name="InsideArea" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="InsideArea"]
+shape = SubResource( 8 )
+
+[connection signal="body_entered" from="TransferArea" to="." method="_on_TransferArea_body_entered"]
+[connection signal="body_exited" from="InsideArea" to="." method="_on_InsideArea_body_exited"]
